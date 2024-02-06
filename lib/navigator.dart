@@ -12,8 +12,8 @@ class Screen extends StatefulWidget {
 class _ScreenState extends State<Screen> {
   int _pageIndex = 0;
   List pages = [
-    HomeScreen(),
-    ProfilePage(),
+    const HomeScreen(),
+    const ProfilePage(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class _ScreenState extends State<Screen> {
         elevation: 10,
         unselectedItemColor: Colors.black,
         selectedItemColor: Colors.red,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',

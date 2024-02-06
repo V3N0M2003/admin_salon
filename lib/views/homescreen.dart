@@ -14,21 +14,21 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Salon Admin'),
+          title: const Text('Salon Admin'),
           centerTitle: true,
           backgroundColor: Colors.red,
         ),
         body: ListView(
           children: [
-            Padding(padding: EdgeInsets.only(top: 15)),
+            const Padding(padding: EdgeInsets.only(top: 15)),
             Row(
               children: [
-                Padding(padding: EdgeInsets.only(left: 10)),
-                Container(
+                const Padding(padding: EdgeInsets.only(left: 10)),
+                SizedBox(
                     height: 60,
                     width: 60,
                     child: Image.asset('assets/icons/sal_profile.png')),
-                Column(
+                const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(padding: EdgeInsets.only(left: 20)),
@@ -50,14 +50,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),*/
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               InkWell(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Appointment()));
+                      MaterialPageRoute(builder: (context) => const Appointment()));
                 },
                 child: Container(
                   height: 160,
@@ -65,15 +65,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(width: 0.7),
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20),
                           bottomLeft: Radius.circular(20),
                           bottomRight: Radius.circular(20)),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(color: Colors.grey, offset: Offset(4, 4))
                       ]),
-                  child: Column(
+                  child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
               InkWell(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MySalon()));
+                      MaterialPageRoute(builder: (context) => const MySalon()));
                 },
                 child: Container(
                   height: 160,
@@ -104,15 +104,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(width: 0.7),
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20),
                           bottomLeft: Radius.circular(20),
                           bottomRight: Radius.circular(20)),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(color: Colors.grey, offset: Offset(4, 4))
                       ]),
-                  child: Column(
+                  child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image(
@@ -132,19 +132,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ]),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Container(
-              padding: EdgeInsets.only(left: 30),
-              child: Text(
+              padding: const EdgeInsets.only(left: 30),
+              child: const Text(
                 'Analytics',
                 style: TextStyle(
                   fontSize: 20,
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
@@ -160,14 +160,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(width: 0.7),
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10),
                               bottomLeft: Radius.circular(10),
                               bottomRight: Radius.circular(10)),
                         ),
-                        padding: EdgeInsets.only(top: 10, left: 10),
-                        child: Column(
+                        padding: const EdgeInsets.only(top: 10, left: 10),
+                        child: const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
@@ -186,14 +186,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(width: 0.7),
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10),
                               bottomLeft: Radius.circular(10),
                               bottomRight: Radius.circular(10)),
                         ),
-                        padding: EdgeInsets.only(top: 10, left: 10),
-                        child: Column(
+                        padding: const EdgeInsets.only(top: 10, left: 10),
+                        child: const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
@@ -208,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Center(
@@ -218,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(width: 0.7),
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(10),
                             topRight: Radius.circular(10),
                             bottomLeft: Radius.circular(10),

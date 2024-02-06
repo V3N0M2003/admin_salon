@@ -11,6 +11,6 @@ class HairCut extends StatefulWidget {
 class _HairCutState extends State<HairCut> {
   @override
   Widget build(BuildContext context) {
-    return ServiceList('Hair cut');
+    return const ServiceList('Hair cut');
   }
 }

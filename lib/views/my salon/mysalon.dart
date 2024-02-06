@@ -15,16 +15,16 @@ class MySalon extends StatefulWidget {
 class _MySalonState extends State<MySalon> {
   int _pageIndex = 0;
   List pages = [
-    HairCut(),
-    BeardCut(),
-    Facial(),
-    OtherServices(),
+    const HairCut(),
+    const BeardCut(),
+    const Facial(),
+    const OtherServices(),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Services'),
+        title: const Text('Services'),
         backgroundColor: Colors.red,
       ),
       body: pages[_pageIndex],
@@ -34,11 +34,11 @@ class _MySalonState extends State<MySalon> {
         child: FloatingActionButton(
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => AddService()));
+                context, MaterialPageRoute(builder: (context) => const AddService()));
           },
-          child: Icon(Icons.add),
           backgroundColor: Colors.red,
           heroTag: 'addButton',
+          child: const Icon(Icons.add),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -52,7 +52,7 @@ class _MySalonState extends State<MySalon> {
         elevation: 10,
         unselectedItemColor: Colors.black,
         selectedItemColor: Colors.red,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.cut),
             label: 'Hair-Cut',

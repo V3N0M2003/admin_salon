@@ -11,9 +11,9 @@ class ServiceContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 5),
+      padding: const EdgeInsets.only(left: 5),
       height: 140,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10),
@@ -45,32 +45,32 @@ class ServiceContainer extends StatelessWidget {
                     //Padding(padding: EdgeInsets.only(top: 20)),
                     Row(
                       children: [
-                        Text(
+                        const Text(
                           'Name   : ',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),
-                        Text(' $name', style: TextStyle(fontSize: 18))
+                        Text(' $name', style: const TextStyle(fontSize: 18))
                       ],
                     ),
                     Row(
                       children: [
-                        Text(
+                        const Text(
                           'Gender : ',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),
-                        Text(' $gender', style: TextStyle(fontSize: 18))
+                        Text(' $gender', style: const TextStyle(fontSize: 18))
                       ],
                     ),
                     Row(
                       children: [
-                        Text(
+                        const Text(
                           'Price    : ',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),
-                        Text(' Rs $price', style: TextStyle(fontSize: 18))
+                        Text(' Rs $price', style: const TextStyle(fontSize: 18))
                       ],
                     ),
                   ],

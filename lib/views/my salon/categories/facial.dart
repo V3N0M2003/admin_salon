@@ -11,6 +11,6 @@ class Facial extends StatefulWidget {
 class _FacialState extends State<Facial> {
   @override
   Widget build(BuildContext context) {
-    return ServiceList('Facial');
+    return const ServiceList('Facial');
   }
 }

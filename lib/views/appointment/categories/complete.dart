@@ -11,7 +11,7 @@ class _CompleteApointmentState extends State<CompleteApointment> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(
+      child: const Center(
         child: Text("Completed Appointments"),
       ),
     );

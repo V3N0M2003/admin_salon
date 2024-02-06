@@ -26,7 +26,7 @@ class _AppointmentState extends State<Appointment> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Appointments'),
+        title: const Text('Appointments'),
         backgroundColor: Colors.red,
         //centerTitle: true,
         actions: [
@@ -35,7 +35,7 @@ class _AppointmentState extends State<Appointment> {
             onChanged: (value) {
               _navigateToPage(value as PageType);
             },
-            items: [
+            items: const [
               DropdownMenuItem(
                 value: PageType.Today,
                 child: Text('Today'),
@@ -65,13 +65,13 @@ class _AppointmentState extends State<Appointment> {
   Widget _buildPageContent() {
     switch (_selectedPage) {
       case PageType.Today:
-        return TodayAppointment();
+        return const TodayAppointment();
       case PageType.Upcoming:
-        return UpcomingApointments();
+        return const UpcomingApointments();
       case PageType.Missed:
-        return MissedApointments();
+        return const MissedApointments();
       case PageType.Complete:
-        return CompleteApointment();
+        return const CompleteApointment();
     }
   }
 }

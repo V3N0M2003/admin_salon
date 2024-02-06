@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 class EditServicePage extends StatefulWidget {
   final String documentId;
 
-  const EditServicePage({required this.documentId});
+  const EditServicePage({super.key, required this.documentId});
 
   @override
   _EditServicePageState createState() => _EditServicePageState();
@@ -79,20 +79,20 @@ class _EditServicePageState extends State<EditServicePage> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Service updated successfully')));
+          const SnackBar(content: Text('Service updated successfully')));
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Success'),
-              content: Text('Service updated successfully!'),
+              title: const Text('Success'),
+              content: const Text('Service updated successfully!'),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
                   },
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             );
@@ -100,7 +100,7 @@ class _EditServicePageState extends State<EditServicePage> {
     } catch (e) {
       print('Error updating service: $e');
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Error updating service')));
+          .showSnackBar(const SnackBar(content: Text('Error updating service')));
     }
   }
 
@@ -118,26 +118,26 @@ class _EditServicePageState extends State<EditServicePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Service'),
+        title: const Text('Edit Service'),
         centerTitle: true,
         backgroundColor: Colors.red,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: const InputDecoration(labelText: 'Name'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: _descriptionController,
-                decoration: InputDecoration(labelText: 'Description'),
+                decoration: const InputDecoration(labelText: 'Description'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               DropdownButtonFormField<String>(
                 value: _selectedGender,
                 onChanged: (newValue) {
@@ -152,9 +152,9 @@ class _EditServicePageState extends State<EditServicePage> {
                     child: Text(value),
                   );
                 }).toList(),
-                decoration: InputDecoration(labelText: 'Gender'),
+                decoration: const InputDecoration(labelText: 'Gender'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               DropdownButtonFormField<String>(
                 value: _selectedCategory,
                 onChanged: (newValue) {
@@ -169,14 +169,14 @@ class _EditServicePageState extends State<EditServicePage> {
                     child: Text(value),
                   );
                 }).toList(),
-                decoration: InputDecoration(labelText: 'Category'),
+                decoration: const InputDecoration(labelText: 'Category'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: _priceController,
-                decoration: InputDecoration(labelText: 'Price'),
+                decoration: const InputDecoration(labelText: 'Price'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               /*ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
               onPressed: () {
@@ -197,11 +197,11 @@ class _EditServicePageState extends State<EditServicePage> {
               height: 150,
               width: 150,
             ),*/
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                 onPressed: _updateService,
-                child: Text('Update'),
+                child: const Text('Update'),
               ),
             ],
           ),

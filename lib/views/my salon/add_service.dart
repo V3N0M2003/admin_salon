@@ -58,15 +58,15 @@ class _AddServiceState extends State<AddService> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Submission Successful'),
-          content: Text('Your data has been submitted successfully!'),
+          title: const Text('Submission Successful'),
+          content: const Text('Your data has been submitted successfully!'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -78,17 +78,17 @@ class _AddServiceState extends State<AddService> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Service'),
+        title: const Text('Add Service'),
         backgroundColor: Colors.red,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
               TextFormField(
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: const InputDecoration(labelText: 'Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a name';
@@ -99,9 +99,9 @@ class _AddServiceState extends State<AddService> {
                   _name = value!;
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Description'),
+                decoration: const InputDecoration(labelText: 'Description'),
                 maxLines: 3,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -113,9 +113,9 @@ class _AddServiceState extends State<AddService> {
                   _description = value!;
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(labelText: 'Gender'),
+                decoration: const InputDecoration(labelText: 'Gender'),
                 value: _gender.isNotEmpty ? _gender : null,
                 items: ['Male', 'Female', 'Unisex']
                     .map((gender) => DropdownMenuItem<String>(
@@ -138,9 +138,9 @@ class _AddServiceState extends State<AddService> {
                   _gender = value!;
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(labelText: 'Category'),
+                decoration: const InputDecoration(labelText: 'Category'),
                 value: _category.isNotEmpty ? _category : null,
                 items: ['Hair cut', 'Facial', 'Beard', 'Other']
                     .map((category) => DropdownMenuItem<String>(
@@ -163,11 +163,11 @@ class _AddServiceState extends State<AddService> {
                   _category = value!;
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20.0,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Price'),
+                decoration: const InputDecoration(labelText: 'Price'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a Price';
@@ -178,7 +178,7 @@ class _AddServiceState extends State<AddService> {
                   _price = num.parse(value!);
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20.0,
               ),
               _imageFile != null
@@ -188,7 +188,7 @@ class _AddServiceState extends State<AddService> {
                       width: 150,
                     )
                   : Container(),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -198,7 +198,7 @@ class _AddServiceState extends State<AddService> {
                     },
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                    child: Text('Select Image'),
+                    child: const Text('Select Image'),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -206,12 +206,12 @@ class _AddServiceState extends State<AddService> {
                     },
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                    child: Text('Take Picture'),
+                    child: const Text('Take Picture'),
                   ),
                 ],
               ),
-              SizedBox(height: 20.0),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                 onPressed: () async {
@@ -224,7 +224,7 @@ class _AddServiceState extends State<AddService> {
                     });
                   }
                 },
-                child: Text('Add Service'),
+                child: const Text('Add Service'),
               ),
             ],
           ),

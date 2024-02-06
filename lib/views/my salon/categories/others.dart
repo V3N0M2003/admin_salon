@@ -11,6 +11,6 @@ class OtherServices extends StatefulWidget {
 class _OtherServicesState extends State<OtherServices> {
   @override
   Widget build(BuildContext context) {
-    return ServiceList('Other');
+    return const ServiceList('Other');
   }
 }

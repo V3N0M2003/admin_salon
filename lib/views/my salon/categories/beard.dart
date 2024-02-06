@@ -11,6 +11,6 @@ class BeardCut extends StatefulWidget {
 class _BeardCutState extends State<BeardCut> {
   @override
   Widget build(BuildContext context) {
-    return ServiceList('Beard');
+    return const ServiceList('Beard');
   }
 }
