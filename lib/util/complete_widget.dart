@@ -1,15 +1,15 @@
-import 'package:admin_salon/util/today_container.dart';
+import 'package:admin_salon/util/complete_container.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class TodayWidget extends StatelessWidget {
+class CompleteWidget extends StatelessWidget {
   final String date;
   final String timeSlot;
   final String serviceId;
   final String userId;
   final String id;
 
-  const TodayWidget(
+  const CompleteWidget(
       {super.key,
       required this.date,
       required this.timeSlot,
@@ -53,26 +53,24 @@ class TodayWidget extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else {
-          return Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 20),
-                TodayContainer(
-                    date,
-                    timeSlot,
-                    snapshot.data!['userName'],
-                    snapshot.data!['serviceName'],
-                    snapshot.data!['category'],
-                    snapshot.data!['imageUrl'],
-                    snapshot.data!['price'],
-                    id),
-                const SizedBox(
-                  height: 10,
-                )
-              ],
-            ),
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 20),
+              CompleteContainer(
+                  date,
+                  timeSlot,
+                  snapshot.data!['userName'],
+                  snapshot.data!['serviceName'],
+                  snapshot.data!['category'],
+                  snapshot.data!['imageUrl'],
+                  snapshot.data!['price'],
+                  id),
+              const SizedBox(
+                height: 10,
+              )
+            ],
           );
         }
       },

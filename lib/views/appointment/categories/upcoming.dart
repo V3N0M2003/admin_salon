@@ -21,6 +21,7 @@ class _UpcomingApointmentsState extends State<UpcomingApointments> {
             .collection('bookings')
             //.orderBy('selectedTimeSlot')
             .where('bookingDate', isGreaterThan: formattedToday)
+            .where('complete', isEqualTo: "0")
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -41,7 +42,8 @@ class _UpcomingApointmentsState extends State<UpcomingApointments> {
                       date: data['bookingDate'].toString(),
                       timeSlot: data['selectedTimeSlot'].toString(),
                       serviceId: data['selectedHairstyle'],
-                      userId: data['userId']),
+                      userId: data['userId'],
+                      id: document.id),
                   const SizedBox(
                     height: 5,
                   )
