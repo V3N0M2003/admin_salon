@@ -1,4 +1,4 @@
-import 'package:admin_salon/navigator.dart';
+import 'package:admin_salon/views/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -13,6 +13,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(debugShowCheckedModeBanner: false, home: Screen());
+    return const MaterialApp(
+        debugShowCheckedModeBanner: false, home: SplashScreen());
   }
 }
