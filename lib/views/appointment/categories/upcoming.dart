@@ -1,4 +1,4 @@
-import 'package:admin_salon/util/today_widget.dart';
+import 'package:admin_salon/util/upcoming_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +38,7 @@ class _UpcomingApointmentsState extends State<UpcomingApointments> {
 
               return Column(
                 children: [
-                  TodayWidget(
+                  UpcomingWidget(
                       date: data['bookingDate'].toString(),
                       timeSlot: data['selectedTimeSlot'].toString(),
                       serviceId: data['selectedHairstyle'],
