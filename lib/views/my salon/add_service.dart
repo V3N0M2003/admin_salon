@@ -18,7 +18,7 @@ class _AddServiceState extends State<AddService> {
 
   String _name = '';
   String _description = '';
-  String _gender = '';
+  String _section = '';
   String _category = '';
   num? _price;
 
@@ -48,7 +48,7 @@ class _AddServiceState extends State<AddService> {
     FirebaseFirestore.instance.collection('services').add({
       'name': _name,
       'description': _description,
-      'gender': _gender,
+      'section': _section,
       'category': _category,
       'price': _price,
       'imageUrl': downloadUrl,
@@ -115,9 +115,9 @@ class _AddServiceState extends State<AddService> {
               ),
               const SizedBox(height: 20.0),
               DropdownButtonFormField<String>(
-                decoration: const InputDecoration(labelText: 'Gender'),
-                value: _gender.isNotEmpty ? _gender : null,
-                items: ['Male', 'Female', 'Unisex']
+                decoration: const InputDecoration(labelText: 'Section'),
+                value: _section.isNotEmpty ? _section : null,
+                items: ['Men', 'Women', 'Unisex', 'Kids']
                     .map((gender) => DropdownMenuItem<String>(
                           value: gender,
                           child: Text(gender),
@@ -125,17 +125,17 @@ class _AddServiceState extends State<AddService> {
                     .toList(),
                 onChanged: (value) {
                   setState(() {
-                    _gender = value!;
+                    _section = value!;
                   });
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please select a gender';
+                    return 'Please select a Section';
                   }
                   return null;
                 },
                 onSaved: (value) {
-                  _gender = value!;
+                  _section = value!;
                 },
               ),
               const SizedBox(height: 20.0),

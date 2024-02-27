@@ -27,56 +27,54 @@ class ServiceContainer extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            child: Row(
-              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.network(
-                  imageUrl,
-                  height: 130,
-                  width: 130,
-                  //fit: BoxFit.cover,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //Padding(padding: EdgeInsets.only(top: 20)),
-                    Row(
-                      children: [
-                        const Text(
-                          'Name   : ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Text(' $name', style: const TextStyle(fontSize: 18))
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Text(
-                          'Gender : ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Text(' $gender', style: const TextStyle(fontSize: 18))
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Text(
-                          'Price    : ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Text(' Rs $price', style: const TextStyle(fontSize: 18))
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.network(
+                imageUrl,
+                height: 130,
+                width: 130,
+                fit: BoxFit.contain,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //Padding(padding: EdgeInsets.only(top: 20)),
+                  Row(
+                    children: [
+                      const Text(
+                        'Name   : ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                      Text(' $name', style: const TextStyle(fontSize: 18))
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Text(
+                        'Gender : ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                      Text(' $gender', style: const TextStyle(fontSize: 18))
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Text(
+                        'Price    : ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                      Text(' Rs $price', style: const TextStyle(fontSize: 18))
+                    ],
+                  ),
+                ],
+              ),
+            ],
           ),
           /*Icon(
             Icons.arrow_circle_right,

@@ -18,7 +18,7 @@ class EditServicePage extends StatefulWidget {
 class _EditServicePageState extends State<EditServicePage> {
   late TextEditingController _nameController;
   late TextEditingController _descriptionController;
-  String? _selectedGender;
+  String? _selectedSection;
   String? _selectedCategory;
   late TextEditingController _priceController;
   // ignore: unused_field
@@ -47,7 +47,7 @@ class _EditServicePageState extends State<EditServicePage> {
         setState(() {
           _nameController.text = data['name'];
           _descriptionController.text = data['description'];
-          _selectedGender = data['gender'];
+          _selectedSection = data['section'];
           _selectedCategory = data['category'];
           _priceController.text = data['price'].toString();
         });
@@ -72,7 +72,7 @@ class _EditServicePageState extends State<EditServicePage> {
           .update({
         'name': _nameController.text,
         'description': _descriptionController.text,
-        'gender': _selectedGender,
+        'section': _selectedSection,
         'category': _selectedCategory,
         'price': num.parse(_priceController.text),
         //'imageUrl': imageUrl,
@@ -99,8 +99,8 @@ class _EditServicePageState extends State<EditServicePage> {
           });
     } catch (e) {
       print('Error updating service: $e');
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Error updating service')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Error updating service')));
     }
   }
 
@@ -139,20 +139,20 @@ class _EditServicePageState extends State<EditServicePage> {
               ),
               const SizedBox(height: 20),
               DropdownButtonFormField<String>(
-                value: _selectedGender,
+                value: _selectedSection,
                 onChanged: (newValue) {
                   setState(() {
-                    _selectedGender = newValue!;
+                    _selectedSection = newValue!;
                   });
                 },
-                items: ['Male', 'Female', 'Unisex']
+                items: ['Men', 'Women', 'Unisex', 'Kids']
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
                   );
                 }).toList(),
-                decoration: const InputDecoration(labelText: 'Gender'),
+                decoration: const InputDecoration(labelText: 'Section'),
               ),
               const SizedBox(height: 20),
               DropdownButtonFormField<String>(

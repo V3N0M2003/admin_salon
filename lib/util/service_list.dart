@@ -50,7 +50,7 @@ class ServiceList extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ServiceContainer(doc['name'], doc['gender'],
+                      ServiceContainer(doc['name'], doc['section'],
                           doc['imageUrl'], doc['price']),
                       Container(
                           height: 40,
@@ -76,9 +76,6 @@ class ServiceList extends StatelessWidget {
                                       12,
                                   decoration: BoxDecoration(
                                     color: Colors.green,
-                                    borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(10),
-                                    ),
                                     border: Border.all(width: 0.7),
                                   ),
                                   child: const Center(
@@ -97,7 +94,7 @@ class ServiceList extends StatelessWidget {
                                 child: Container(
                                   //height: 68.6,
                                   width: MediaQuery.of(context).size.width / 2 -
-                                      12,
+                                      11,
                                   decoration: BoxDecoration(
                                     color: Colors.red,
                                     borderRadius: const BorderRadius.only(
