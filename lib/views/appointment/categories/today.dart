@@ -13,8 +13,8 @@ class _TodayAppointmentState extends State<TodayAppointment> {
   //final FirebaseAuth _auth = FirebaseAuth.instance;
   //late String? currentUserId;
   DateTime today = DateTime.now();
-  late String formattedToday =
-      formattedToday = "${today.year}-${today.month}-${today.day}";
+  late String formattedToday = formattedToday =
+      "${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
 
   @override
   Widget build(BuildContext context) {

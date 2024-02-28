@@ -53,26 +53,24 @@ class TodayWidget extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else {
-          return Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 20),
-                TodayContainer(
-                    date,
-                    timeSlot,
-                    snapshot.data!['userName'],
-                    snapshot.data!['serviceName'],
-                    snapshot.data!['category'],
-                    snapshot.data!['imageUrl'],
-                    snapshot.data!['price'],
-                    id),
-                const SizedBox(
-                  height: 10,
-                )
-              ],
-            ),
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 20),
+              TodayContainer(
+                  date,
+                  timeSlot,
+                  snapshot.data!['userName'],
+                  snapshot.data!['serviceName'],
+                  snapshot.data!['category'],
+                  snapshot.data!['imageUrl'],
+                  snapshot.data!['price'],
+                  id),
+              const SizedBox(
+                height: 10,
+              )
+            ],
           );
         }
       },

@@ -12,7 +12,7 @@ class MissedApointments extends StatefulWidget {
 class _MissedApointmentsState extends State<MissedApointments> {
   DateTime today = DateTime.now();
   late String formattedToday =
-      formattedToday = "${today.year}-${today.month}-${today.day}";
+      formattedToday = "${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,8 @@
+import 'package:admin_salon/views/Analytics/analytics.dart';
 import 'package:admin_salon/views/appointment/appointments.dart';
 import 'package:admin_salon/views/my%20salon/mysalon.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -136,14 +138,28 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
             height: 30,
           ),
-          Container(
-            padding: const EdgeInsets.only(left: 30),
-            child: const Text(
-              'Analytics',
-              style: TextStyle(
-                fontSize: 20,
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.only(left: 30),
+                child: const Text(
+                  'Analytics',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
               ),
-            ),
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Analytics(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.arrow_circle_right))
+            ],
           ),
           const SizedBox(
             height: 10,
@@ -249,11 +265,72 @@ class _HomeScreenState extends State<HomeScreen> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(width: 0.7),
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                          bottomLeft: Radius.circular(10),
-                          bottomRight: Radius.circular(10)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: FutureBuilder<Map<DateTime, int>>(
+                      future: fetchBookingData(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        } else {
+                          final data = snapshot.data!;
+                          final List<FlSpot> spots = [];
+                          final List<String> days = [];
+                          data.forEach((date, bookings) {
+                            spots.add(FlSpot(
+                                days.length.toDouble(), bookings.toDouble()));
+                            days.add(date.day.toString());
+                          });
+                          if (spots.isEmpty) {
+                            return Center(
+                                child: Text('No booking data available.'));
+                          }
+                          return LineChart(
+                            LineChartData(
+                              titlesData: FlTitlesData(
+                                bottomTitles: SideTitles(
+                                  showTitles: true,
+                                  getTextStyles: (value) =>
+                                      const TextStyle(fontSize: 10),
+                                  margin: 8,
+                                  getTitles: (value) {
+                                    if (value.toInt() >= 0 &&
+                                        value.toInt() < days.length) {
+                                      return days[value.toInt()];
+                                    }
+                                    return '';
+                                  },
+                                ),
+                                leftTitles: SideTitles(
+                                  showTitles: true,
+                                  getTextStyles: (value) =>
+                                      const TextStyle(fontSize: 10),
+                                  margin: 8,
+                                ),
+                              ),
+                              borderData: FlBorderData(
+                                show: true,
+                                border: Border.all(color: Colors.grey),
+                              ),
+                              lineBarsData: [
+                                LineChartBarData(
+                                  spots: spots,
+                                  isCurved: true,
+                                  colors: [Colors.blue],
+                                  barWidth: 2,
+                                  isStrokeCapRound: true,
+                                  dotData: FlDotData(show: true),
+                                  belowBarData: BarAreaData(show: false),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      },
                     ),
                   ),
                 ),
@@ -293,4 +370,31 @@ Future<int> sum() async {
     totalPrice += price;
   }
   return totalPrice;
+}
+
+Future<Map<DateTime, int>> fetchBookingData() async {
+  final now = DateTime.now();
+  final DateTime lastWeek = now.subtract(const Duration(days: 7));
+
+  final String formatteddate =
+      "${lastWeek.year}-${lastWeek.month.toString().padLeft(2, '0')}-${lastWeek.day.toString().padLeft(2, '0')}";
+
+  final bookingsQuery = await FirebaseFirestore.instance
+      .collection('bookings')
+      .where('complete', isEqualTo: '1')
+      .where('bookingDate', isGreaterThan: formatteddate)
+      .get();
+
+  final Map<DateTime, int> bookingData = {};
+
+  bookingsQuery.docs.forEach((bookingDoc) {
+    final DateTime bookingDate =
+        (bookingDoc['bookingDate'] as Timestamp).toDate();
+    final DateTime date =
+        DateTime(bookingDate.year, bookingDate.month, bookingDate.day);
+
+    bookingData.update(date, (value) => value + 1, ifAbsent: () => 1);
+  });
+
+  return bookingData;
 }

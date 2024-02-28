@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class MissedContainer extends StatelessWidget {
   final String date;
@@ -12,6 +14,49 @@ class MissedContainer extends StatelessWidget {
   const MissedContainer(this.date, this.time, this.username, this.servicename,
       this.category, this.imgUrl, this.price, this.id,
       {super.key});
+
+  Future<void> update() async {
+    await FirebaseFirestore.instance
+        .collection('bookings')
+        .doc(id)
+        .update({'complete': "1"});
+  }
+
+  void _showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirmation'),
+          content: const Text(
+              'Are you sure you want to mark this appointment as done?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                update();
+                Fluttertoast.showToast(
+                  msg: 'Appointment marked as done',
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  backgroundColor: Colors.green,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                );
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,20 +172,39 @@ class MissedContainer extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 15),
-          Container(
-            height: 40,
-            decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: const BorderRadius.only(
-                    //topLeft: Radius.circular(10),
-                    //topRight: Radius.circular(10),
-                    bottomLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10)),
-                border: Border.all(width: 0.7),
-                boxShadow: const [
-                  BoxShadow(color: Colors.grey, offset: Offset(4, 4))
-                ]),
-          ),
+          InkWell(
+            onTap: () {
+              _showConfirmationDialog(context);
+            },
+            child: Container(
+              height: 40,
+              decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: const BorderRadius.only(
+                      //topLeft: Radius.circular(10),
+                      //topRight: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10)),
+                  border: Border.all(width: 0.7),
+                  boxShadow: const [
+                    BoxShadow(color: Colors.grey, offset: Offset(4, 4))
+                  ]),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.check_circle_outlined,
+                    color: Colors.white,
+                  ),
+                  Text(
+                    "  Mark as Done",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );

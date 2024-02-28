@@ -28,8 +28,8 @@ class TodayContainer extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Confirmation'),
-          content:
-              const Text('Are you sure you want to mark this appointment as done?'),
+          content: const Text(
+              'Are you sure you want to mark this appointment as done?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
