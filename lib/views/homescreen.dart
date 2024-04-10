@@ -1,3 +1,4 @@
+import 'package:admin_salon/views/Analytics/analyticcontainer.dart';
 import 'package:admin_salon/views/Analytics/analytics.dart';
 import 'package:admin_salon/views/appointment/appointments.dart';
 import 'package:admin_salon/views/my%20salon/mysalon.dart';
@@ -22,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.red,
       ),
       body: ListView(
+        scrollDirection: Axis.vertical,
         children: [
           const Padding(padding: EdgeInsets.only(top: 15)),
           Row(
@@ -164,178 +166,101 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
             height: 10,
           ),
-          Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      height: 70,
-                      width: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(width: 0.7),
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10),
-                            bottomLeft: Radius.circular(10),
-                            bottomRight: Radius.circular(10)),
-                      ),
-                      padding: const EdgeInsets.only(top: 10, left: 10),
-                      child: FutureBuilder<int>(
-                        future: count(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          } else {
-                            int bookingCount = snapshot.data ?? 0;
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Total appointments',
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                                Text(
-                                  '$bookingCount',
-                                  style: const TextStyle(fontSize: 20),
-                                ),
-                              ],
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                    Container(
-                      height: 70,
-                      width: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(width: 0.7),
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10),
-                            bottomLeft: Radius.circular(10),
-                            bottomRight: Radius.circular(10)),
-                      ),
-                      padding: const EdgeInsets.only(top: 10, left: 10),
-                      child: FutureBuilder<int>(
-                        future: sum(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          } else {
-                            int revenue = snapshot.data ?? 0;
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Total Earnings',
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                                Text(
-                                  '$revenue',
-                                  style: const TextStyle(fontSize: 20),
-                                ),
-                              ],
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Center(
-                  child: Container(
-                    height: 250,
-                    width: 350,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    height: 70,
+                    width: 150,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(width: 0.7),
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
+                          bottomRight: Radius.circular(10)),
                     ),
-                    child: FutureBuilder<Map<DateTime, int>>(
-                      future: fetchBookingData(),
+                    padding: const EdgeInsets.only(top: 10, left: 10),
+                    child: FutureBuilder<int>(
+                      future: count(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
+                          return const Center(
+                              child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
-                          return Center(
-                              child: Text('Error: ${snapshot.error}'));
+                          return Text('Error: ${snapshot.error}');
                         } else {
-                          final data = snapshot.data!;
-                          final List<FlSpot> spots = [];
-                          final List<String> days = [];
-                          data.forEach((date, bookings) {
-                            spots.add(FlSpot(
-                                days.length.toDouble(), bookings.toDouble()));
-                            days.add(date.day.toString());
-                          });
-                          if (spots.isEmpty) {
-                            return Center(
-                                child: Text('No booking data available.'));
-                          }
-                          return LineChart(
-                            LineChartData(
-                              titlesData: FlTitlesData(
-                                bottomTitles: SideTitles(
-                                  showTitles: true,
-                                  getTextStyles: (value) =>
-                                      const TextStyle(fontSize: 10),
-                                  margin: 8,
-                                  getTitles: (value) {
-                                    if (value.toInt() >= 0 &&
-                                        value.toInt() < days.length) {
-                                      return days[value.toInt()];
-                                    }
-                                    return '';
-                                  },
-                                ),
-                                leftTitles: SideTitles(
-                                  showTitles: true,
-                                  getTextStyles: (value) =>
-                                      const TextStyle(fontSize: 10),
-                                  margin: 8,
-                                ),
+                          int bookingCount = snapshot.data ?? 0;
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Total appointments',
+                                style: TextStyle(color: Colors.grey),
                               ),
-                              borderData: FlBorderData(
-                                show: true,
-                                border: Border.all(color: Colors.grey),
+                              Text(
+                                '$bookingCount',
+                                style: const TextStyle(fontSize: 20),
                               ),
-                              lineBarsData: [
-                                LineChartBarData(
-                                  spots: spots,
-                                  isCurved: true,
-                                  colors: [Colors.blue],
-                                  barWidth: 2,
-                                  isStrokeCapRound: true,
-                                  dotData: FlDotData(show: true),
-                                  belowBarData: BarAreaData(show: false),
-                                ),
-                              ],
-                            ),
+                            ],
                           );
                         }
                       },
                     ),
                   ),
-                ),
-              ],
-            ),
+                  Container(
+                    height: 70,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(width: 0.7),
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
+                          bottomRight: Radius.circular(10)),
+                    ),
+                    padding: const EdgeInsets.only(top: 10, left: 10),
+                    child: FutureBuilder<int>(
+                      future: sum(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          int revenue = snapshot.data ?? 0;
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Total Earnings',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              Text(
+                                '$revenue',
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                            ],
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              CompletedAppointmentsGraph()
+            ],
           )
         ],
       ),
@@ -370,31 +295,4 @@ Future<int> sum() async {
     totalPrice += price;
   }
   return totalPrice;
-}
-
-Future<Map<DateTime, int>> fetchBookingData() async {
-  final now = DateTime.now();
-  final DateTime lastWeek = now.subtract(const Duration(days: 7));
-
-  final String formatteddate =
-      "${lastWeek.year}-${lastWeek.month.toString().padLeft(2, '0')}-${lastWeek.day.toString().padLeft(2, '0')}";
-
-  final bookingsQuery = await FirebaseFirestore.instance
-      .collection('bookings')
-      .where('complete', isEqualTo: '1')
-      .where('bookingDate', isGreaterThan: formatteddate)
-      .get();
-
-  final Map<DateTime, int> bookingData = {};
-
-  bookingsQuery.docs.forEach((bookingDoc) {
-    final DateTime bookingDate =
-        (bookingDoc['bookingDate'] as Timestamp).toDate();
-    final DateTime date =
-        DateTime(bookingDate.year, bookingDate.month, bookingDate.day);
-
-    bookingData.update(date, (value) => value + 1, ifAbsent: () => 1);
-  });
-
-  return bookingData;
 }
