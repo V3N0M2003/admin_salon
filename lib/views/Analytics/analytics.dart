@@ -1,3 +1,4 @@
+import 'package:admin_salon/views/Analytics/analyticcontainer.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -18,6 +19,8 @@ class _AnalyticsState extends State<Analytics> {
   int allcompletedAppointmentsCount = 1;
   int allupcomingAppointmentsCount = 1;
   bool showWeeklyChart = true;
+  int weeksum = 0;
+  int allsum = 0;
 
   @override
   void initState() {
@@ -25,6 +28,8 @@ class _AnalyticsState extends State<Analytics> {
     initializeDaysOfWeek();
     fetchCompletedAppointments();
     fetchAllApointments();
+    weeklysum();
+    overallsum();
   }
 
   void initializeDaysOfWeek() {
@@ -36,6 +41,53 @@ class _AnalyticsState extends State<Analytics> {
       final day = startOfWeek.add(Duration(days: i));
       allDaysOfWeek.add(DateFormat('yyyy-MM-dd').format(day));
     }
+  }
+
+  Future<void> weeklysum() async {
+    final now = DateTime.now();
+    final startOfWeek = DateTime(now.year, now.month, now.day)
+        .subtract(Duration(days: now.weekday - 1));
+    final endOfWeek =
+        startOfWeek.add(Duration(days: 7)).subtract(Duration(seconds: 1));
+
+    QuerySnapshot bookingQuery = await FirebaseFirestore.instance
+        .collection('bookings')
+        .where('complete', isEqualTo: "1")
+        .where('bookingDate',
+            isGreaterThanOrEqualTo: startOfWeek.toIso8601String())
+        .where('bookingDate', isLessThanOrEqualTo: endOfWeek.toIso8601String())
+        .get();
+
+    for (QueryDocumentSnapshot bookingDoc in bookingQuery.docs) {
+      String serviceId = bookingDoc['selectedHairstyle'];
+      DocumentSnapshot serviceDoc = await FirebaseFirestore.instance
+          .collection('services')
+          .doc(serviceId)
+          .get();
+
+      int price = serviceDoc['price'];
+      weeksum += price;
+    }
+    print("cost : $weeksum");
+  }
+
+  Future<void> overallsum() async {
+    QuerySnapshot bookingQuery = await FirebaseFirestore.instance
+        .collection('bookings')
+        .where('complete', isEqualTo: "1")
+        .get();
+
+    for (QueryDocumentSnapshot bookingDoc in bookingQuery.docs) {
+      String serviceId = bookingDoc['selectedHairstyle'];
+      DocumentSnapshot serviceDoc = await FirebaseFirestore.instance
+          .collection('services')
+          .doc(serviceId)
+          .get();
+
+      int price = serviceDoc['price'];
+      allsum += price;
+    }
+    print("cost : $allsum");
   }
 
   Future<void> fetchCompletedAppointments() async {
@@ -110,10 +162,6 @@ class _AnalyticsState extends State<Analytics> {
         }
       }
     });
-
-    print(allcompletedAppointmentsCount +
-        allmissingAppointmentsCount +
-        allupcomingAppointmentsCount);
   }
 
   @override
@@ -159,7 +207,7 @@ class _AnalyticsState extends State<Analytics> {
             //SizedBox(height: 10),
             showWeeklyChart ? buildWeeklyChart() : buildOverallChart(),
             SizedBox(height: 20),
-            buildCompletedAppointmentsByWeekChart(),
+            // buildCompletedAppointmentsByWeekChart(),
             SizedBox(height: 50),
           ],
         ),
@@ -170,75 +218,221 @@ class _AnalyticsState extends State<Analytics> {
   Widget buildWeeklyChart() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        height: 400,
-        decoration: BoxDecoration(border: Border.all(width: 1.0)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("Weekly overall record",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 15),
-            SizedBox(
-              height: 250,
-              child: PieChart(
-                PieChartData(
-                  sections: [
-                    PieChartSectionData(
-                      value: completedAppointmentsCount.toDouble(),
-                      title: completedAppointmentsCount.toString(),
-                      color: Colors.green,
-                      radius: 50,
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                height: 70,
+                width: 180,
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple[100],
+                  border: Border.all(width: 1.0),
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10)),
+                ),
+                padding: const EdgeInsets.only(top: 10, left: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Total appointments',
                     ),
-                    PieChartSectionData(
-                      value: missingAppointmentsCount.toDouble(),
-                      title: missingAppointmentsCount.toString(),
-                      color: Colors.red,
-                      radius: 50,
-                    ),
-                    PieChartSectionData(
-                      value: upcomingAppointmentsCount.toDouble(),
-                      title: upcomingAppointmentsCount.toString(),
-                      color: Colors.blue,
-                      radius: 50,
+                    Text(
+                      '$completedAppointmentsCount',
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            Row(
+              Container(
+                height: 70,
+                width: 180,
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple[100],
+                  border: Border.all(width: 1.0),
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10)),
+                ),
+                padding: const EdgeInsets.only(top: 10, left: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Total revenue',
+                    ),
+                    Text(
+                      '$weeksum',
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 15),
+          Container(
+            height: 400,
+            decoration: BoxDecoration(border: Border.all(width: 1.0)),
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text("Completed appointments this week : ",
-                    style: TextStyle(fontSize: 15)),
-                Text("$completedAppointmentsCount",
+                const Text("Weekly overall record",
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 15),
+                SizedBox(
+                  height: 250,
+                  child: PieChart(
+                    PieChartData(
+                      sections: [
+                        PieChartSectionData(
+                          value: completedAppointmentsCount.toDouble(),
+                          title: completedAppointmentsCount.toString(),
+                          color: Colors.green,
+                          radius: 50,
+                        ),
+                        PieChartSectionData(
+                          value: missingAppointmentsCount.toDouble(),
+                          title: missingAppointmentsCount.toString(),
+                          color: Colors.red,
+                          radius: 50,
+                        ),
+                        PieChartSectionData(
+                          value: upcomingAppointmentsCount.toDouble(),
+                          title: upcomingAppointmentsCount.toString(),
+                          color: Colors.blue,
+                          radius: 50,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Completed appointments this week : ",
+                        style: TextStyle(fontSize: 15)),
+                    Text("$completedAppointmentsCount",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Upcoming appointments this week : ",
+                        style: TextStyle(fontSize: 15)),
+                    Text("$upcomingAppointmentsCount",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Missing appointments this week : ",
+                        style: TextStyle(fontSize: 15)),
+                    Text("$missingAppointmentsCount",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                  ],
+                ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+          ),
+          const SizedBox(height: 20),
+          Container(
+            //height: 500,
+            padding: EdgeInsets.all(8.0),
+            decoration: BoxDecoration(border: Border.all(width: 1.0)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text("Upcoming appointments this week : ",
-                    style: TextStyle(fontSize: 15)),
-                Text("$upcomingAppointmentsCount",
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                Text(
+                  'Completed Appointments by Week',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 20),
+                AspectRatio(
+                  aspectRatio: 1.5,
+                  child: BarChart(
+                    BarChartData(
+                      alignment: BarChartAlignment.spaceAround,
+                      maxY: completedAppointmentsByWeek.values.isNotEmpty
+                          ? completedAppointmentsByWeek.values
+                              .reduce((value, element) =>
+                                  value > element ? value : element)
+                              .toDouble()
+                          : 0,
+                      barGroups: [
+                        ...allDaysOfWeek.map((day) {
+                          final count =
+                              completedAppointmentsByWeek[day]?.toDouble() ?? 0;
+                          final weekdays =
+                              day.split('-').map(int.parse).toList();
+                          final date =
+                              DateTime(weekdays[0], weekdays[1], weekdays[2]);
+                          return BarChartGroupData(
+                            x: allDaysOfWeek.indexOf(day),
+                            barRods: [
+                              BarChartRodData(
+                                y: count,
+                                colors: [Colors.green],
+                              ),
+                            ],
+                          );
+                        }),
+                      ],
+                      titlesData: FlTitlesData(
+                        bottomTitles: SideTitles(
+                          showTitles: true,
+                          getTextStyles: (value) => TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                          ),
+                          margin: 10,
+                          rotateAngle: -30,
+                          getTitles: (double value) {
+                            final index = value.toInt();
+                            if (index >= 0 && index < allDaysOfWeek.length) {
+                              final day = allDaysOfWeek[index];
+                              final weekdays =
+                                  day.split('-').map(int.parse).toList();
+                              final date = DateTime(
+                                  weekdays[0], weekdays[1], weekdays[2]);
+                              return DateFormat('EEEE').format(date);
+                            }
+                            return '';
+                          },
+                        ),
+                        leftTitles: SideTitles(
+                          showTitles: true,
+                          getTextStyles: (value) => TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 50),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Missing appointments this week : ",
-                    style: TextStyle(fontSize: 15)),
-                Text("$missingAppointmentsCount",
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -246,153 +440,141 @@ class _AnalyticsState extends State<Analytics> {
   Widget buildOverallChart() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        height: 400,
-        decoration: BoxDecoration(border: Border.all(width: 1.0)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("Overall record",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 15),
-            SizedBox(
-              height: 250,
-              child: PieChart(
-                PieChartData(
-                  sections: [
-                    PieChartSectionData(
-                      value: allcompletedAppointmentsCount.toDouble(),
-                      title: allcompletedAppointmentsCount.toString(),
-                      color: Colors.green,
-                      radius: 50,
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                height: 70,
+                width: 180,
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple[100],
+                  border: Border.all(width: 1.0),
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10)),
+                ),
+                padding: const EdgeInsets.only(top: 10, left: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Total appointments',
                     ),
-                    PieChartSectionData(
-                      value: allmissingAppointmentsCount.toDouble(),
-                      title: allmissingAppointmentsCount.toString(),
-                      color: Colors.red,
-                      radius: 50,
-                    ),
-                    PieChartSectionData(
-                      value: allupcomingAppointmentsCount.toDouble(),
-                      title: allupcomingAppointmentsCount.toString(),
-                      color: Colors.blue,
-                      radius: 50,
+                    Text(
+                      '$allcompletedAppointmentsCount',
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Completed appointments : ",
-                    style: TextStyle(fontSize: 15)),
-                Text("$allcompletedAppointmentsCount",
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Upcoming appointments : ",
-                    style: TextStyle(fontSize: 15)),
-                Text("$allupcomingAppointmentsCount",
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Missing appointments : ",
-                    style: TextStyle(fontSize: 15)),
-                Text("$allmissingAppointmentsCount",
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildCompletedAppointmentsByWeekChart() {
-    return Container(
-      //height: 500,
-      padding: EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            'Completed Appointments by Week',
-            textAlign: TextAlign.center,
+              Container(
+                height: 70,
+                width: 180,
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple[100],
+                  border: Border.all(width: 1.0),
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10)),
+                ),
+                padding: const EdgeInsets.only(top: 10, left: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Total revenue',
+                    ),
+                    Text(
+                      '$allsum',
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 20),
-          AspectRatio(
-            aspectRatio: 1.5,
-            child: BarChart(
-              BarChartData(
-                alignment: BarChartAlignment.spaceAround,
-                maxY: completedAppointmentsByWeek.values.isNotEmpty
-                    ? completedAppointmentsByWeek.values
-                        .reduce((value, element) =>
-                            value > element ? value : element)
-                        .toDouble()
-                    : 0,
-                barGroups: [
-                  ...allDaysOfWeek.map((day) {
-                    final count =
-                        completedAppointmentsByWeek[day]?.toDouble() ?? 0;
-                    final weekdays = day.split('-').map(int.parse).toList();
-                    final date =
-                        DateTime(weekdays[0], weekdays[1], weekdays[2]);
-                    return BarChartGroupData(
-                      x: allDaysOfWeek.indexOf(day),
-                      barRods: [
-                        BarChartRodData(
-                          y: count,
-                          colors: [Colors.green],
+          const SizedBox(height: 15),
+          Container(
+            height: 400,
+            decoration: BoxDecoration(border: Border.all(width: 1.0)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Overall record",
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 15),
+                SizedBox(
+                  height: 250,
+                  child: PieChart(
+                    PieChartData(
+                      sections: [
+                        PieChartSectionData(
+                          value: allcompletedAppointmentsCount.toDouble(),
+                          title: allcompletedAppointmentsCount.toString(),
+                          color: Colors.green,
+                          radius: 50,
+                        ),
+                        PieChartSectionData(
+                          value: allmissingAppointmentsCount.toDouble(),
+                          title: allmissingAppointmentsCount.toString(),
+                          color: Colors.red,
+                          radius: 50,
+                        ),
+                        PieChartSectionData(
+                          value: allupcomingAppointmentsCount.toDouble(),
+                          title: allupcomingAppointmentsCount.toString(),
+                          color: Colors.blue,
+                          radius: 50,
                         ),
                       ],
-                    );
-                  }),
-                ],
-                titlesData: FlTitlesData(
-                  bottomTitles: SideTitles(
-                    showTitles: true,
-                    getTextStyles: (value) => TextStyle(
-                      color: Colors.black,
-                      fontSize: 12,
-                    ),
-                    margin: 10,
-                    rotateAngle: -30,
-                    getTitles: (double value) {
-                      final index = value.toInt();
-                      if (index >= 0 && index < allDaysOfWeek.length) {
-                        final day = allDaysOfWeek[index];
-                        final weekdays = day.split('-').map(int.parse).toList();
-                        final date =
-                            DateTime(weekdays[0], weekdays[1], weekdays[2]);
-                        return DateFormat('EEEE').format(date);
-                      }
-                      return '';
-                    },
-                  ),
-                  leftTitles: SideTitles(
-                    showTitles: true,
-                    getTextStyles: (value) => TextStyle(
-                      color: Colors.black,
-                      fontSize: 12,
                     ),
                   ),
                 ),
-              ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Completed appointments : ",
+                        style: TextStyle(fontSize: 15)),
+                    Text("$allcompletedAppointmentsCount",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Upcoming appointments : ",
+                        style: TextStyle(fontSize: 15)),
+                    Text("$allupcomingAppointmentsCount",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Missing appointments : ",
+                        style: TextStyle(fontSize: 15)),
+                    Text("$allmissingAppointmentsCount",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ],
             ),
           ),
-          SizedBox(height: 50),
+          const SizedBox(height: 20),
+          CompletedAppointmentsGraph(),
         ],
       ),
     );

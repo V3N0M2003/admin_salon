@@ -39,41 +39,44 @@ class _CompletedAppointmentsGraphState
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            'Completed Appointments by Month',
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 20),
-          AspectRatio(
-            aspectRatio: 1.5,
-            child: BarChart(
-              BarChartData(
-                alignment: BarChartAlignment.center,
-                maxY: completedAppointmentsByMonth
-                    .reduce(
-                        (value, element) => value > element ? value : element)
-                    .toDouble(),
-                barGroups: [
-                  for (int i = 1; i <= 12; i++)
-                    BarChartGroupData(
-                      x: i,
-                      barRods: [
-                        BarChartRodData(
-                          y: completedAppointmentsByMonth[i].toDouble(),
-                          colors: [Colors.green],
-                        ),
-                      ],
-                    ),
-                ],
+    return Padding(
+      padding: const EdgeInsets.all(0),
+      child: Container(
+        decoration: BoxDecoration(border: Border.all(width: 1.0)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Appointments by Month',
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 20),
+            AspectRatio(
+              aspectRatio: 1.5,
+              child: BarChart(
+                BarChartData(
+                  alignment: BarChartAlignment.center,
+                  maxY: completedAppointmentsByMonth
+                      .reduce(
+                          (value, element) => value > element ? value : element)
+                      .toDouble(),
+                  barGroups: [
+                    for (int i = 1; i <= 12; i++)
+                      BarChartGroupData(
+                        x: i,
+                        barRods: [
+                          BarChartRodData(
+                            y: completedAppointmentsByMonth[i].toDouble(),
+                            colors: [Colors.green],
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -13,7 +13,7 @@ class _ScreenState extends State<Screen> {
   int _pageIndex = 0;
   List pages = [
     const HomeScreen(),
-    const ProfilePage(),
+    ProfilePage(),
   ];
   @override
   Widget build(BuildContext context) {

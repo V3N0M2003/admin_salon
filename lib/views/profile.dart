@@ -1,3 +1,4 @@
+import 'package:admin_salon/util/textbox.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -7,7 +8,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Salon Profile'),
-        backgroundColor: Colors.red, // Change the color according to your theme
+        backgroundColor: Colors.red,
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
@@ -19,48 +20,48 @@ class ProfilePage extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 20),
           const Text(
-            'Salon Name',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+            'Name : ',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 5),
+          TextBox("SalonPro"),
+          const SizedBox(height: 20),
+          const Text(
+            'Description : ',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 5),
+          TextBox("Best in class salon in markett"),
+          const SizedBox(height: 20),
+          const Text(
+            'Address : ',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 5),
+          TextBox("Near VIIT college, Kondhwa - 411048"),
+          const SizedBox(height: 100),
+          SizedBox(
+            child: ElevatedButton.icon(
+              onPressed: () {},
+              icon: const Icon(Icons.edit),
+              label: const Text('Logout'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+              ),
             ),
           ),
-          const Text(
-            'AAA Salon',
-            style: TextStyle(
-              fontSize: 20,
+          SizedBox(
+            child: ElevatedButton.icon(
+              onPressed: () {},
+              icon: const Icon(Icons.exit_to_app),
+              label: const Text('Logout'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
             ),
-          ),
-          const SizedBox(height: 30),
-          const Text(
-            'Salon Information',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const Text(
-            'xxxxxxxx xxxxxx  xxxxxxx xxxxxxxx',
-            style: TextStyle(
-              fontSize: 20,
-            ),
-          ),
-          const SizedBox(height: 30),
-          const Text(
-            'Salon Address',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const Text(
-            'xxxxxx xxxxxx  xxxxxx xxxxx xxxx',
-            style: TextStyle(
-              fontSize: 20,
-            ),
-          ),
+          )
         ],
       ),
     );
